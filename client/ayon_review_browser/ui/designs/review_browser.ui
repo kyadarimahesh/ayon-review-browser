@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BrowserWidget</class>
+ <widget class="QMainWindow" name="BrowserWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>699</width>
+    <height>626</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Review Browser</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_main">
+    <item>
+     <layout class="QHBoxLayout" name="filtersLayout">
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QToolButton" name="toolButton">
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tabReviewSubmission">
+       <attribute name="title">
+        <string>Review Submission</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="reviewSubmissionLayout">
+        <item>
+         <widget class="QTableView" name="tableView_review_versions"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabLists">
+       <attribute name="title">
+        <string>Lists</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="listsLayout">
+        <item>
+         <widget class="QSplitter" name="splitterLists">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <widget class="QWidget" name="leftWidget">
+           <layout class="QVBoxLayout" name="leftLayout">
+            <item>
+             <widget class="QLineEdit" name="searchLineEdit">
+              <property name="placeholderText">
+               <string>Search lists...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListView" name="listView"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QTableView" name="tableView_list_versions"/>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

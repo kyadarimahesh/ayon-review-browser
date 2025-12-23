@@ -1,0 +1,6 @@
+[project]
+name="ayon_review_browser"
+description="Custom Bot Reviewer for RV."
+
+[tool.poetry.dependencies]
+six = "^1.15"
