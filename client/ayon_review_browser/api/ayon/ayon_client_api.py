@@ -2,7 +2,6 @@ from typing import Optional, List, Dict, Any
 
 from .project_service import ProjectService
 from .version_service import VersionService
-from .activity_service import ActivityService
 from .task_service import TaskService
 from .file_service import FileService
 
@@ -11,7 +10,6 @@ class AyonClient:
     def __init__(self) -> None:
         self.project_service = ProjectService()
         self.version_service = VersionService()
-        self.activity_service = ActivityService()
         self.task_service = TaskService()
         self.file_service = FileService()
 
@@ -41,92 +39,12 @@ class AyonClient:
     def get_version_details(self, project_name: str, version_id: str) -> Dict[str, Any]:
         return self.version_service.get_version_details(project_name, version_id)
 
-    # Activity operations
-    def create_comment_on_version(self, project_name: str, version_id: str, message: str,
-                                  user_name: Optional[str] = None,
-                                  file_paths: Optional[List[str]] = None,
-                                  task_id: Optional[str] = None,
-                                  task_name: Optional[str] = None,
-                                  path: Optional[str] = None,
-                                  version_name: Optional[str] = None) -> Optional[List[str]]:
-        return self.activity_service.create_comment_on_version(project_name, version_id, message, user_name, file_paths,
-                                                               task_id, task_name, path, version_name)
-
-    def process_version_activities(self, project_name: str, version_id: str, 
-                                   task_id: Optional[str] = None,
-                                   path: Optional[str] = None,
-                                   status_colors: dict = None,
-                                   update_callback=None) -> str:
-        return self.activity_service.process_version_activities(project_name, version_id, task_id, path,
-                                                               status_colors, update_callback)
-
     # Task operations
     def get_tasks(self, project_name: str) -> Dict[str, Any]:
         return self.task_service.get_tasks(project_name)
 
     def get_recent_tasks_count(self, project_name: str, days: int = 7) -> int:
         return self.task_service.get_recent_tasks_count(project_name, days)
-
-    # Activity operations (GraphQL)
-    def get_activities(self, project_name: str, entity_ids: List[str], 
-                      reference_types: List[str] = None, 
-                      activity_types: List[str] = None,
-                      first: int = 100, after: str = None) -> Dict:
-        """Get activity feed/comments"""
-        query = """
-        query GetActivities(
-          $projectName: String!
-          $entityIds: [String!]!
-          $after: String
-          $first: Int
-          $referenceTypes: [String!]
-          $activityTypes: [String!]
-        ) {
-          project(name: $projectName) {
-            name
-            activities(
-              entityIds: $entityIds
-              after: $after
-              first: $first
-              referenceTypes: $referenceTypes
-              activityTypes: $activityTypes
-            ) {
-              pageInfo {
-                hasPreviousPage
-                hasNextPage
-                startCursor
-                endCursor
-              }
-              edges {
-                cursor
-                node {
-                  activityType
-                  activityData
-                  createdAt
-                  updatedAt
-                  entityId
-                  entityType
-                  projectName
-                  author {
-                    name
-                  }
-                  referenceType
-                  body
-                }
-              }
-            }
-          }
-        }
-        """
-        result = self.graphql_query(query, {
-            'projectName': project_name,
-            'entityIds': entity_ids,
-            'referenceTypes': reference_types or ['origin', 'mention', 'relation'],
-            'activityTypes': activity_types,
-            'first': first,
-            'after': after
-        })
-        return result.get('data', {}) if result else {}
 
     # File operations
     @staticmethod

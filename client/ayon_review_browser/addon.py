@@ -1,46 +1,55 @@
-import os
-import logging
-from ayon_core.addon import AYONAddon, ITrayAction
-from ayon_api import get_server_api_connection
-from .version import __version__
+"""Review Browser addon for AYON.
 
+Provides standalone review browser for viewing and managing
+review submissions across projects.
+"""
+from ayon_core.addon import AYONAddon, ITrayAction
 from ayon_applications import ApplicationManager
 
+from .version import __version__
 
-class TrayReviewAddon(AYONAddon, ITrayAction):
-    label = "Reviewer"
-    name = "trayreviewer"
-    host_name = "bot_review_notes"
+
+class ReviewBrowserAddon(AYONAddon, ITrayAction):
+    """Review Browser addon for AYON."""
+
+    name = "ayon_review_browser"
     version = __version__
+    label = "Review with OpenRV"
 
     def initialize(self, settings):
-        """Initialization of addon."""
-        self._dialog = None
+        """Initialize addon with settings."""
+        pass
+
+    def connect_with_addons(self, enabled_addons):
+        """Connect with other addons."""
+        pass
 
     def tray_init(self):
-        return
+        """Initialize tray integration."""
+        pass
 
-    def run_rv_reviewer(self):
-        """
-        Launches OpenRV from AYON environment WITHOUT project/folder/task context.
-        """
+    def tray_start(self):
+        """Start addon logic in tray."""
+        pass
+
+    def tray_exit(self):
+        """Cleanup addon resources."""
+        pass
+
+    def on_action_trigger(self):
+        """Launch OpenRV with Review Browser from tray."""
         app_manager = ApplicationManager()
         openrv_app = app_manager.find_latest_available_variant_for_group("openrv")
+
         if not openrv_app:
             raise RuntimeError(
-                "No configured OpenRV found in"
-                " Applications. Ask admin to configure it"
-                " in ayon+settings://applications/applications/openrv."
-                "\nProvide '-network' there as argument."
+                "OpenRV not configured. "
+                "Configure in ayon+settings://applications/applications/openrv"
             )
 
-        # Launch OpenRV without context
         openrv_app.launch(
             project_name=None,
             folder_path=None,
             task_name=None,
             start_last_workfile=False
         )
-
-    def on_action_trigger(self):
-        self.run_rv_reviewer()

@@ -1,6 +1,6 @@
 name = "ayon_review_browser"
 title = "Review Browser"
-version = "0.0.1"
+version = "2.0.0"
 
 client_dir = "ayon_review_browser"
 

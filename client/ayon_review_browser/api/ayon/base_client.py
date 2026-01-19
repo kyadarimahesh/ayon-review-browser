@@ -6,11 +6,6 @@ from ayon_api import get_server_api_connection
 
 class BaseAyonClient:
     def __init__(self) -> None:
-        os.environ.setdefault("AYON_SERVER_URL", "http://localhost:5000")
-        os.environ.setdefault("AYON_API_KEY", "cdeaedca95c1f38c8e9d52c8ad9f718e10b9cf6b7bf2c68eac738f5cf037b020")
-
-        # os.environ.setdefault("AYON_SERVER_URL", "http://localhost:5000")
-        # os.environ.setdefault("AYON_API_KEY", "c70c93bf3210a1adb354047751cef015e5f59f91975bba38b1a7b1ef50a4217f")
 
         try:
             self.ayon_connection = get_server_api_connection()

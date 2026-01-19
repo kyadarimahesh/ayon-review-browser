@@ -1,3 +1,5 @@
+import os
+
 try:
     from qtpy.QtCore import *
     from qtpy.QtGui import *
@@ -83,7 +85,6 @@ class PreferencesManager:
 
         # Save splitter sizes
         settings.setValue("list_splitter", self.main_window.splitterLists.saveState())
-        settings.setValue("main_splitter", self.main_window.activity_ui.mainSplitter.saveState())
 
         # Save row height
         settings.setValue("row_height",
@@ -174,10 +175,6 @@ class PreferencesManager:
         if list_splitter_state:
             self.main_window.splitterLists.restoreState(list_splitter_state)
 
-        main_splitter_state = settings.value("main_splitter")
-        if main_splitter_state:
-            self.main_window.activity_ui.mainSplitter.restoreState(main_splitter_state)
-
         # Load row height
         row_height = settings.value("row_height", 30)
         if isinstance(row_height, str):
@@ -194,6 +191,7 @@ class PreferencesManager:
                 index = self.main_window.filter_controller.project_selector.findText(current_project)
                 if index >= 0:
                     self.main_window.filter_controller.project_selector.setCurrentIndex(index)
+                    os.environ['AYON_PROJECT_NAME'] = current_project
                     # Trigger project change after a delay to ensure UI is ready
                     QTimer.singleShot(200,
                                       lambda: self.main_window.filter_controller.project_changed.emit(current_project))

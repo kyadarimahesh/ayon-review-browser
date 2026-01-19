@@ -1,3 +1,5 @@
+import os
+
 try:
     from qtpy.QtCore import *
     from qtpy.QtGui import *
@@ -117,12 +119,16 @@ class AdvancedFilterController(QObject):
         """Handle project selection from dropdown."""
         if hasattr(self, 'project_selector'):
             project_value = self.project_selector.currentText()
+            if project_value:
+                os.environ['AYON_PROJECT_NAME'] = project_value
             self.project_changed.emit(project_value)
 
     def _on_project_entered(self):
         """Handle project entered via typing."""
         if hasattr(self, 'project_selector'):
             project_value = self.project_selector.currentText()
+            if project_value:
+                os.environ['AYON_PROJECT_NAME'] = project_value
             self.project_changed.emit(project_value)
 
     def get_widget(self):
